@@ -1,8 +1,9 @@
 local DSS = game:GetService("DataStoreService")
-
+local main = DSS:GetDataStore("main")
 
 local dataStoreNames = game.Workspace.Scripted.Leaderboards:GetChildren()
 
+local userIds = {}
 
 for _,instance in dataStoreNames do
 	if not instance:IsA("Model") then continue end
@@ -12,8 +13,15 @@ for _,instance in dataStoreNames do
 	local curPage = dataStore:GetSortedAsync(false,100):GetCurrentPage()
 	for _,data in curPage do
 		dataStore:RemoveAsync(data.key)
-		
-		print("REMOVED: "..data.key.." FROM: "..instance.Name.." LEADERBOARD")
+		local userId = string.split(data.key,"_")[1]
+		print("REMOVED: "..userId.." FROM: "..instance.Name.." LEADERBOARD")
+		if not table.find(userIds,userId) then table.insert(userIds,userId) end
 	end
 end
-print("\n\nALL DONE!")
+
+for _,userId in userIds do
+	main:RemoveAsync(userId)
+end
+
+
+warn("\n\nALL DONE!")
