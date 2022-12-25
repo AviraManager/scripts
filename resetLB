@@ -18,9 +18,11 @@ for _,instance in dataStoreNames do
 		if not table.find(userIds,userId) then table.insert(userIds,userId) end
 	end
 end
+print("\n")
 
 for _,userId in userIds do
 	main:RemoveAsync(userId)
+	print("Removed all data of userid: "..userId)
 end
 
 
