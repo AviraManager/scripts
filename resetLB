@@ -1,0 +1,19 @@
+local DSS = game:GetService("DataStoreService")
+
+
+local dataStoreNames = game.Workspace.Scripted.Leaderboards:GetChildren()
+
+
+for _,instance in dataStoreNames do
+	if not instance:IsA("Model") then continue end
+	
+	local dataStore = DSS:GetOrderedDataStore(instance.Name)
+	
+	local curPage = dataStore:GetSortedAsync(false,100):GetCurrentPage()
+	for _,data in curPage do
+		dataStore:RemoveAsync(data.key)
+		
+		print("REMOVED: "..data.key.." FROM: "..instance.Name.." LEADERBOARD")
+	end
+end
+print("\n\nALL DONE!")
